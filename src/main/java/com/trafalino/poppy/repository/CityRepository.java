@@ -1,5 +1,6 @@
-package com.trafalino.poppy;
+package com.trafalino.poppy.repository;
 
+import com.trafalino.poppy.dto.City;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

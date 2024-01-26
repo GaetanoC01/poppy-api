@@ -1,5 +1,7 @@
-package com.trafalino.poppy;
+package com.trafalino.poppy.service;
 
+import com.trafalino.poppy.dto.City;
+import com.trafalino.poppy.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

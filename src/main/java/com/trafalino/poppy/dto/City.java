@@ -1,4 +1,4 @@
-package com.trafalino.poppy;
+package com.trafalino.poppy.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
