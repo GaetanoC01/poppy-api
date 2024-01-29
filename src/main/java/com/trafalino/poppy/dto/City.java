@@ -25,5 +25,4 @@ public class City {
     private String codiceCatastale;
     private List<String> cap;
     private Integer popolazione;
-
 }
