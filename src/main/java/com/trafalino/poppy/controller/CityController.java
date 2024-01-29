@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,6 +18,14 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
+    @PostMapping
+    public ResponseEntity<City> createCity(@RequestBody City city) {
+        return new ResponseEntity<City>(
+                cityService.save(city),
+                HttpStatus.CREATED
+        );
+    }
+
     @GetMapping("/{cityName}")
     public ResponseEntity<Optional<City>> getSingleCity(
             @PathVariable String cityName
@@ -26,4 +35,14 @@ public class CityController {
                 HttpStatus.OK
         );
     }
+
+    @DeleteMapping("/{cityName}")
+    public ResponseEntity<List<City>> deleteCity(@PathVariable String cityName){
+        return new ResponseEntity<List<City>>(
+                cityService.deleteCity(cityName),
+                HttpStatus.OK
+        );
+    }
+
+
 }
