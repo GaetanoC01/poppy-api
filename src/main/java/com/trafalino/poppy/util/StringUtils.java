@@ -1,10 +1,10 @@
 package com.trafalino.poppy.util;
 
+
+import org.apache.commons.text.WordUtils;
+
 public class StringUtils {
     public static String capitalize(String toCapitalize) {
-        return toCapitalize
-                .substring(0, 1)
-                .toUpperCase()
-                + toCapitalize.substring(1);
+        return WordUtils.capitalize(toCapitalize);
     }
 }
