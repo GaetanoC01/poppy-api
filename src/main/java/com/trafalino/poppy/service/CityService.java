@@ -42,7 +42,7 @@ public class CityService {
         Query query = new Query().addCriteria(
                 Criteria.where("nome").is(StringUtils.capitalize(cityName))
         );
-        Update updateDefinition = new Update().set(field, newValue);
+        Update updateDefinition = new Update().set(field, StringUtils.capitalize(newValue));
         UpdateResult updateResult = mongoTemplate.updateFirst(
                 query,
                 updateDefinition,
