@@ -22,6 +22,7 @@ public class CityService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    // TODO: add capitalizazion of city name
     public City save(City newCity) {
         return cityRepository.save(newCity);
     }

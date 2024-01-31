@@ -1,9 +1,8 @@
 package com.trafalino.poppy.service;
 
-
 import com.mongodb.client.result.UpdateResult;
-import com.trafalino.poppy.dto.Product;
-import com.trafalino.poppy.repository.ProductRepository;
+import com.trafalino.poppy.dto.Wholesaler;
+import com.trafalino.poppy.repository.WholesalerRepository;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,41 +15,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductService {
+public class WholesalerService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private WholesalerRepository wholesalerRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    // TODO: add capitalizazion of product name
-    public Product save(Product newProduct) {
-        return productRepository.save(newProduct);
+    // TODO: add capitalizazion of wholsaler name
+    public Wholesaler save(Wholesaler newWholesaler){
+        return wholesalerRepository.save(newWholesaler);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Wholesaler> getAllWholesalers() {
+        return wholesalerRepository.findAll();
     }
 
-    public Optional<Product> getSingleProduct(String name) {
-        return productRepository.findProductByNome(StringUtils.capitalize(name));
+    public Optional<Wholesaler> getSingleWholesaler(String name) {
+        return wholesalerRepository.findWholesalerByNome(StringUtils.capitalize(name));
     }
 
-    public String updateSingleProduct(
-            String productName,
+    public String updateSingleWholesaler(
+            String wholesalerName,
             String field,
             String newValue
     ) {
         Update updateDefinition = null;
         Query query = new Query().addCriteria(
-                Criteria.where("nome").is(StringUtils.capitalize(productName))
+                Criteria.where("nome").is(StringUtils.capitalize(wholesalerName))
         );
 
-        if(field.equals("nome")) {
+        if (field.equals("nome")) {
             updateDefinition = new Update().set(field, StringUtils.capitalize(newValue));
         }
-        else if (field.equals("prezzo")){
+        else if (field.equals("scontistica")) {
             double newValueConverted = Double.parseDouble(newValue);
             updateDefinition = new Update().set(field, newValueConverted);
         }
@@ -59,7 +58,7 @@ public class ProductService {
             UpdateResult updateResult = mongoTemplate.updateFirst(
                     query,
                     updateDefinition,
-                    Product.class
+                    Wholesaler.class
             );
 
             return updateResult.toString();
@@ -68,7 +67,7 @@ public class ProductService {
         return null;
     }
 
-    public List<Product> deleteProduct(String name) {
-        return productRepository.deleteProductByNome(StringUtils.capitalize(name));
+    public List<Wholesaler> deleteWholesaler(String name){
+        return wholesalerRepository.deleteWholesalerByNome(StringUtils.capitalize(name));
     }
 }
