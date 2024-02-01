@@ -19,10 +19,22 @@ public class City {
     private String nome;
     private String codice;
     private Object zona;
-    private Object regione;
-    private Object provincia;
+    private Region regione;
+    private Province provincia;
     private String sigla;
     private String codiceCatastale;
     private List<String> cap;
     private Integer popolazione;
+
+    public String getRegion() {
+        return regione.getNome();
+    }
+
+    public String getProvince() {
+        return provincia.getNome();
+    }
+
+    public String getCap() {
+        return cap.get(0);
+    }
 }

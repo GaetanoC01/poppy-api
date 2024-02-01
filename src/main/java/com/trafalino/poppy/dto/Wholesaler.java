@@ -16,4 +16,8 @@ public class Wholesaler {
     private ObjectId id;
     private String nome;
     private double scontistica;
+
+    public double getScontistica() {
+        return scontistica;
+    }
 }

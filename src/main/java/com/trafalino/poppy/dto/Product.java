@@ -17,4 +17,9 @@ public class Product {
     private ObjectId id;
     private String nome;
     private double prezzo;
+
+    //Getters
+    public double getPrezzo() {
+        return prezzo;
+    }
 }
