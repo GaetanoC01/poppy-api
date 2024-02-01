@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 //TODO: Add logic to uptade totaleVendite if qty price or discount are changed
+//TODO: add variables numeric fields and double fields to an xml file and read from it
 @Service
 public class SaleService {
     private String[] numericFields = {"anno", "quantita"};
