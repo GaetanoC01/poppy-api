@@ -83,29 +83,44 @@ public class SaleService {
     public List<Sale> getAllSales() {
         return saleRepository.findAll();
     }
-    public Optional<List<Sale>> getSaleByYear(int year) {
-        return saleRepository.findSaleByAnno(year);
-    }
-    public Optional<List<Sale>> getSaleByMonth(String month) {
-        return saleRepository.findSaleByMese(StringUtils.capitalize(month));
-    }
-    public Optional<List<Sale>> getSaleByWholesaler(String wholesaler) {
-        return saleRepository.findSaleByGrossista(StringUtils.capitalize(wholesaler));
-    }
-    public Optional<List<Sale>> getSaleByProduct(String product) {
-        return saleRepository.findSaleByProdotto(StringUtils.capitalize(product));
-    }
-    public Optional<List<Sale>> getSaleByCitta(String city) {
-        return saleRepository.findSaleByCitta(StringUtils.capitalize(city));
-    }
-    public Optional<List<Sale>> getSaleByCap(String cap) {
-        return saleRepository.findSaleByCap(cap);
-    }
-    public Optional<List<Sale>> getSaleByProvince(String province) {
-        return saleRepository.findSaleByProvincia(StringUtils.capitalize(province));
-    }
-    public Optional<List<Sale>> getSaleByRegion(String region) {
-        return saleRepository.findSaleByRegione(StringUtils.capitalize(region));
+    public List<Sale> filterData(
+            String month,
+            Integer year,
+            String wholesaler,
+            String city,
+            String province,
+            String region,
+            String cap,
+            String product
+    ) {
+        Query query = new Query();
+
+        if(month != null) {
+            query.addCriteria(Criteria.where("mese").is(month));
+        }
+        if(year != null) {
+            query.addCriteria(Criteria.where("anno").is(year));
+        }
+        if(wholesaler != null) {
+            query.addCriteria(Criteria.where("grossista").is(wholesaler));
+        }
+        if(city != null) {
+            query.addCriteria(Criteria.where("citta").is(city));
+        }
+        if(province != null) {
+            query.addCriteria(Criteria.where("provincia").is(province));
+        }
+        if(region != null) {
+            query.addCriteria(Criteria.where("regione").is(region));
+        }
+        if(cap != null) {
+            query.addCriteria(Criteria.where("cap").is(cap));
+        }
+        if(product != null) {
+            query.addCriteria(Criteria.where("prodotto").is(product));
+        }
+
+        return mongoTemplate.find(query, Sale.class);
     }
 
     // Update Service
