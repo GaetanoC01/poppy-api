@@ -24,8 +24,8 @@ public class ProductService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    // TODO: add capitalizazion of product name
     public Product save(Product newProduct) {
+        newProduct.setNome(StringUtils.capitalize(newProduct.getNome()));
         return productRepository.save(newProduct);
     }
 

@@ -22,4 +22,12 @@ public class Product {
     public double getPrezzo() {
         return prezzo;
     }
+    public String getNome() {
+        return nome;
+    }
+
+    // Setters
+    public void setNome(String newName) {
+        nome = newName;
+    }
 }

@@ -48,6 +48,15 @@ public class Sale {
     }
 
     // Setters
+    public void setCitta(String newCity) {
+        citta = newCity;
+    }
+    public void setGrossista(String newWholesaler) {
+        grossista = newWholesaler;
+    }
+    public void setProdotto(String newProduct) {
+        prodotto = newProduct;
+    }
     public void setCap(String newCap) {
         cap = newCap;
     }

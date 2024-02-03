@@ -24,6 +24,7 @@ import java.util.Optional;
 
 //TODO: Add logic to uptade totaleVendite if qty price or discount are changed
 //TODO: add variables numeric fields and double fields to an xml file and read from it
+
 @Service
 public class SaleService {
     private String[] numericFields = {"anno", "quantita"};
@@ -46,15 +47,21 @@ public class SaleService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+
     // Create Service
     // This method takes values from other documents in the database in order
     // to enrich the new entry
     public Sale createSale(Sale newSale) {
         double totalSale;
 
+        newSale.setCitta(StringUtils.capitalize(newSale.getCitta()));
+        newSale.setGrossista(StringUtils.capitalize(newSale.getGrossista()));
+        newSale.setProdotto(StringUtils.capitalize(newSale.getProdotto()));
+
         String cityName = newSale.getCitta();
         String wholesalerName = newSale.getGrossista();
         String productName = newSale.getProdotto();
+
 
         Optional<City> city = cityRepository.findCityByNome(cityName);
         Optional<Wholesaler> wholesaler = wholesalerRepository
@@ -64,9 +71,11 @@ public class SaleService {
 
         newSale.setPrezzo(product.get().getPrezzo());
         newSale.setScontistica(wholesaler.get().getScontistica());
-        newSale.setCap(city.get().getCap());
-        newSale.setProvincia(city.get().getProvince());
-        newSale.setRegione(city.get().getRegion());
+        newSale.setCap(city.get().getCap()[0]);
+
+
+        newSale.setProvincia(city.get().getProvincia().getNome());
+        newSale.setRegione(city.get().getRegione().getNome());
 
         totalSale = ComputationUtils.computeSale(
                 newSale.getPrezzo(),

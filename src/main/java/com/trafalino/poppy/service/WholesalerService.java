@@ -23,8 +23,8 @@ public class WholesalerService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    // TODO: add capitalizazion of wholsaler name
     public Wholesaler save(Wholesaler newWholesaler){
+        newWholesaler.setNome(StringUtils.capitalize(newWholesaler.getNome()));
         return wholesalerRepository.save(newWholesaler);
     }
 

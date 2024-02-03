@@ -2,6 +2,8 @@ package com.trafalino.poppy.service;
 
 import com.mongodb.client.result.UpdateResult;
 import com.trafalino.poppy.dto.City;
+import com.trafalino.poppy.dto.Province;
+import com.trafalino.poppy.dto.Region;
 import com.trafalino.poppy.repository.CityRepository;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,23 @@ public class CityService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    // TODO: add capitalizazion of city name
+    //TODO: update regione to be created(nested object)
     public City save(City newCity) {
+        Region region = newCity.getRegione();
+        Province province = newCity.getProvincia();
+        newCity.setNome(
+                StringUtils.capitalize(newCity.getNome())
+        );
+
+        region.setNome(
+                StringUtils.capitalize(region.getNome())
+        );
+        province.setNome(
+                StringUtils.capitalize(province.getNome())
+        );
+        newCity.setRegione(region);
+        newCity.setProvincia(province);
+
         return cityRepository.save(newCity);
     }
 

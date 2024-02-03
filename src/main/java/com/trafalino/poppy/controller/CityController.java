@@ -21,9 +21,9 @@ public class CityController {
     private CityService cityService;
 
     @PostMapping
-    public ResponseEntity<City> createCity(@RequestBody City city) {
+    public ResponseEntity<City> createCity(@RequestBody City newCity) {
         return new ResponseEntity<City>(
-                cityService.save(city),
+                cityService.save(newCity),
                 HttpStatus.CREATED
         );
     }

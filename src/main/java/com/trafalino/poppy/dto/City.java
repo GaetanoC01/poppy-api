@@ -7,8 +7,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Document(collection = "cities")
 @Data
 @AllArgsConstructor
@@ -23,18 +21,38 @@ public class City {
     private Province provincia;
     private String sigla;
     private String codiceCatastale;
-    private List<String> cap;
+    private String[] cap;
     private Integer popolazione;
 
-    public String getRegion() {
-        return regione.getNome();
+    public String getNome() {
+        return nome;
     }
 
-    public String getProvince() {
-        return provincia.getNome();
+    public Region getRegione() {
+        return this.regione;
     }
 
-    public String getCap() {
-        return cap.get(0);
+    public Province getProvincia() {
+        return this.provincia;
+    }
+
+    public String[] getCap() {
+        return cap;
+    }
+
+    public void setNome(String newName) {
+        nome = newName;
+    }
+
+    public void setRegione(Region newRegion) {
+        this.regione = newRegion;
+    }
+
+    public void setProvincia(Province newProvince) {
+        this.provincia = newProvince;
+    }
+
+    public void setCap(String[] newCap) {
+        this.cap = newCap;
     }
 }

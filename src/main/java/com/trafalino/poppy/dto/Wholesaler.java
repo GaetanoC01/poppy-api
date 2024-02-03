@@ -20,4 +20,12 @@ public class Wholesaler {
     public double getScontistica() {
         return scontistica;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String newName) {
+        nome = newName;
+    }
 }
