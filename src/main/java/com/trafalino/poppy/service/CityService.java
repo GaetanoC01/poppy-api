@@ -24,7 +24,6 @@ public class CityService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    //TODO: update regione to be created(nested object)
     public City save(City newCity) {
         Region region = newCity.getRegione();
         Province province = newCity.getProvincia();
@@ -57,10 +56,24 @@ public class CityService {
             String field,
             String newValue
     ){
+        Update updateDefinition = new Update();
         Query query = new Query().addCriteria(
                 Criteria.where("nome").is(StringUtils.capitalize(cityName))
         );
-        Update updateDefinition = new Update().set(field, StringUtils.capitalize(newValue));
+
+        if (field.equals("regione")) {
+            Region region = new Region();
+            region.setNome(StringUtils.capitalize(newValue));
+            updateDefinition = updateDefinition.set(field, region);
+        }
+        else if(field.equals("provincia")) {
+            Province province = new Province();
+            province.setNome(StringUtils.capitalize(newValue));
+            updateDefinition = updateDefinition.set(field, province);
+        } else {
+            updateDefinition = updateDefinition.set(field, StringUtils.capitalize(newValue));
+        }
+
         UpdateResult updateResult = mongoTemplate.updateFirst(
                 query,
                 updateDefinition,
@@ -107,6 +120,7 @@ public class CityService {
 
         return updateResult.toString();
     }
+
 
     public List<City> deleteCity(String name){
         return cityRepository.deleteCityByNome(StringUtils.capitalize(name));

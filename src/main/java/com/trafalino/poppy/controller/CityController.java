@@ -1,6 +1,7 @@
 package com.trafalino.poppy.controller;
 
 import com.trafalino.poppy.dto.City;
+import com.trafalino.poppy.dto.Region;
 import com.trafalino.poppy.dto.UpdateRecord;
 import com.trafalino.poppy.dto.UpdateRecordMulti;
 import com.trafalino.poppy.service.CityService;
