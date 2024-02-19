@@ -5,6 +5,7 @@ import com.trafalino.poppy.dto.Wholesaler;
 import com.trafalino.poppy.repository.WholesalerRepository;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,11 +30,16 @@ public class WholesalerService {
     }
 
     public List<Wholesaler> getAllWholesalers() {
-        return wholesalerRepository.findAll();
+        return wholesalerRepository.findAll(Sort.by("nome").ascending());
     }
 
     public Optional<Wholesaler> getSingleWholesaler(String name) {
         return wholesalerRepository.findWholesalerByNome(StringUtils.capitalize(name));
+    }
+
+    public List<Optional<Wholesaler>> getWholesalersLike(String name) {
+        Sort sort = Sort.by("nome").ascending();
+        return wholesalerRepository.findWholesalerByNomeLike(name, sort);
     }
 
     public String updateSingleWholesaler(

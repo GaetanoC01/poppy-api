@@ -6,6 +6,7 @@ import com.trafalino.poppy.dto.Product;
 import com.trafalino.poppy.repository.ProductRepository;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,11 +31,16 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by("nome").ascending());
     }
 
     public Optional<Product> getSingleProduct(String name) {
         return productRepository.findProductByNome(StringUtils.capitalize(name));
+    }
+
+    public List<Optional<Product>> getProductsLike(String name) {
+        Sort sort = Sort.by("nome").ascending();
+        return productRepository.findProductByNomeLike(name, sort);
     }
 
     public String updateSingleProduct(

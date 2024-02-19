@@ -10,8 +10,10 @@ import com.trafalino.poppy.repository.ProductRepository;
 import com.trafalino.poppy.repository.SaleRepository;
 import com.trafalino.poppy.repository.WholesalerRepository;
 import com.trafalino.poppy.util.ComputationUtils;
+import com.trafalino.poppy.util.MonthEncoder;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -57,6 +59,10 @@ public class SaleService {
         newSale.setCitta(StringUtils.capitalize(newSale.getCitta()));
         newSale.setGrossista(StringUtils.capitalize(newSale.getGrossista()));
         newSale.setProdotto(StringUtils.capitalize(newSale.getProdotto()));
+        newSale.setMese(StringUtils.capitalize(newSale.getMese()));
+
+        Integer monthEncoded = MonthEncoder.encode(newSale.getMese());
+        newSale.setMeseEncoded(monthEncoded);
 
         String cityName = newSale.getCitta();
         String wholesalerName = newSale.getGrossista();
@@ -90,7 +96,11 @@ public class SaleService {
 
     // Get Service
     public List<Sale> getAllSales() {
-        return saleRepository.findAll();
+        return saleRepository.findAll(Sort.by(
+                Sort.Order.desc("anno"),
+                Sort.Order.desc("meseEncoded")
+                )
+        );
     }
     public List<Sale> filterData(
             String month,

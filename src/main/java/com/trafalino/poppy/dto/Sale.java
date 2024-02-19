@@ -15,6 +15,7 @@ public class Sale {
     @Id
     private ObjectId id;
     private String mese;
+    private int meseEncoded;
     private int anno;
     private String grossista;
     private double scontistica;
@@ -46,6 +47,13 @@ public class Sale {
     public double getPrezzo() {
         return prezzo;
     }
+    public String getMese() {
+        return mese;
+    }
+
+    public int getMeseEncoded() {
+        return meseEncoded;
+    }
 
     // Setters
     public void setCitta(String newCity) {
@@ -74,5 +82,11 @@ public class Sale {
     }
     public void setTotaleVendite(double newTotaleVendite) {
         totaleVendite = newTotaleVendite;
+    }
+    public void setMese(String newMese){
+        mese = newMese;
+    }
+    public void setMeseEncoded(int newMeseEncoded){
+        meseEncoded = newMeseEncoded;
     }
 }

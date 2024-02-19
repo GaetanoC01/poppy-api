@@ -50,6 +50,17 @@ public class WholesalerController {
         );
     }
 
+    @GetMapping("/search/{wholesalerName}")
+    public ResponseEntity<List<Optional<Wholesaler>>> getWholesalersSearch(
+            @PathVariable String wholesalerName
+    ) {
+        return new ResponseEntity<List<Optional<Wholesaler>>>(
+                wholesalerService.getWholesalersLike(wholesalerName)
+                ,
+                HttpStatus.OK
+        );
+    }
+
     @PutMapping("/{wholesalerName}")
     public ResponseEntity<String> updateWholesaler(
             @PathVariable String wholesalerName,

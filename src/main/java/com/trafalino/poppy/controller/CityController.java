@@ -1,7 +1,6 @@
 package com.trafalino.poppy.controller;
 
 import com.trafalino.poppy.dto.City;
-import com.trafalino.poppy.dto.Region;
 import com.trafalino.poppy.dto.UpdateRecord;
 import com.trafalino.poppy.dto.UpdateRecordMulti;
 import com.trafalino.poppy.service.CityService;
@@ -43,6 +42,16 @@ public class CityController {
     ){
         return new ResponseEntity<Optional<City>>(
                 cityService.getSingleCity(cityName),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/search/{cityName}")
+    public ResponseEntity<List<Optional<City>>> getCitiesSearch(
+            @PathVariable String cityName
+    ){
+        return new ResponseEntity<List<Optional<City>>>(
+                cityService.getCitiesLike(cityName),
                 HttpStatus.OK
         );
     }

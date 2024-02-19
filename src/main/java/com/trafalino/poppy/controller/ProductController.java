@@ -50,6 +50,17 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/search/{productName}")
+    public ResponseEntity<List<Optional<Product>>> getProductsSearch(
+            @PathVariable String productName
+    ) {
+        return new ResponseEntity<List<Optional<Product>>>(
+                productService.getProductsLike(productName)
+                ,
+                HttpStatus.OK
+        );
+    }
+
     @PutMapping("/{productName}")
     public ResponseEntity<String> updateProduct(
             @PathVariable String productName,
