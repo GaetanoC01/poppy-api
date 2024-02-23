@@ -5,6 +5,10 @@ import com.trafalino.poppy.dto.UpdateRecord;
 import com.trafalino.poppy.service.SaleService;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +35,22 @@ public class SaleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sale>> getAllSales() {
-        return new ResponseEntity<List<Sale>>(
-                saleService.getAllSales()
+    public ResponseEntity<Page<Sale>> getAllSales(
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        Pageable pageable = PageRequest.of(
+                page,
+                10,
+                Sort.by("anno").descending().and(
+                        Sort.by("meseEncoded").descending()
+                ).and(
+                        Sort.by("grossista").ascending()
+                ).and(
+                        Sort.by("prodotto").ascending()
+                )
+        );
+        return new ResponseEntity<Page<Sale>>(
+                saleService.getAllSales(pageable)
                 ,
                 HttpStatus.OK
         );

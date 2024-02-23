@@ -13,7 +13,8 @@ import com.trafalino.poppy.util.ComputationUtils;
 import com.trafalino.poppy.util.MonthEncoder;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -95,12 +96,8 @@ public class SaleService {
     }
 
     // Get Service
-    public List<Sale> getAllSales() {
-        return saleRepository.findAll(Sort.by(
-                Sort.Order.desc("anno"),
-                Sort.Order.desc("meseEncoded")
-                )
-        );
+    public Page<Sale> getAllSales(Pageable pageable) {
+        return saleRepository.findAll(pageable);
     }
     public List<Sale> filterData(
             String month,

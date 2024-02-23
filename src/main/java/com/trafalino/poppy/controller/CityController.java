@@ -5,6 +5,10 @@ import com.trafalino.poppy.dto.UpdateRecord;
 import com.trafalino.poppy.dto.UpdateRecordMulti;
 import com.trafalino.poppy.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +33,12 @@ public class CityController {
     }
 
     @GetMapping
-    public ResponseEntity<List<City>> getAllCities() {
-        return new ResponseEntity<List<City>>(
-                cityService.getAllCities(),
+    public ResponseEntity<Page<City>> getAllCities(
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        return new ResponseEntity<Page<City>>(
+                cityService.getAllCities(pageable),
                 HttpStatus.OK
         );
     }
@@ -47,11 +54,13 @@ public class CityController {
     }
 
     @GetMapping("/search/{cityName}")
-    public ResponseEntity<List<Optional<City>>> getCitiesSearch(
-            @PathVariable String cityName
+    public ResponseEntity<Page<Optional<City>>> getCitiesSearch(
+            @PathVariable String cityName,
+            @RequestParam(defaultValue = "0") int page
     ){
-        return new ResponseEntity<List<Optional<City>>>(
-                cityService.getCitiesLike(cityName),
+        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        return new ResponseEntity<Page<Optional<City>>>(
+                cityService.getCitiesLike(cityName, pageable),
                 HttpStatus.OK
         );
     }

@@ -4,6 +4,10 @@ import com.trafalino.poppy.dto.Product;
 import com.trafalino.poppy.dto.UpdateRecord;
 import com.trafalino.poppy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +35,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return new ResponseEntity<List<Product>>(
-                productService.getAllProducts()
+    public ResponseEntity<Page<Product>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        Pageable pageable = PageRequest.of(
+                page,
+                10,
+                Sort.Direction.ASC,
+                "nome"
+        );
+        return new ResponseEntity<Page<Product>>(
+                productService.getAllProducts(pageable)
                 ,
                 HttpStatus.OK
         );
@@ -51,11 +63,13 @@ public class ProductController {
     }
 
     @GetMapping("/search/{productName}")
-    public ResponseEntity<List<Optional<Product>>> getProductsSearch(
-            @PathVariable String productName
+    public ResponseEntity<Page<Optional<Product>>> getProductsSearch(
+            @PathVariable String productName,
+            @RequestParam(defaultValue = "0") int page
     ) {
-        return new ResponseEntity<List<Optional<Product>>>(
-                productService.getProductsLike(productName)
+        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        return new ResponseEntity<Page<Optional<Product>>>(
+                productService.getProductsLike(productName, pageable)
                 ,
                 HttpStatus.OK
         );

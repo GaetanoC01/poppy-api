@@ -6,7 +6,8 @@ import com.trafalino.poppy.dto.Product;
 import com.trafalino.poppy.repository.ProductRepository;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,17 +31,16 @@ public class ProductService {
         return productRepository.save(newProduct);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll(Sort.by("nome").ascending());
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public Optional<Product> getSingleProduct(String name) {
         return productRepository.findProductByNome(StringUtils.capitalize(name));
     }
 
-    public List<Optional<Product>> getProductsLike(String name) {
-        Sort sort = Sort.by("nome").ascending();
-        return productRepository.findProductByNomeLike(name, sort);
+    public Page<Optional<Product>> getProductsLike(String name, Pageable pageable) {
+        return productRepository.findProductByNomeLike(name, pageable);
     }
 
     public String updateSingleProduct(

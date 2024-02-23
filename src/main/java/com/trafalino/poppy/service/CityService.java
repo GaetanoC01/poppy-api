@@ -7,7 +7,8 @@ import com.trafalino.poppy.dto.Region;
 import com.trafalino.poppy.repository.CityRepository;
 import com.trafalino.poppy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -44,17 +45,16 @@ public class CityService {
         return cityRepository.save(newCity);
     }
 
-    public List<City> getAllCities(){
-        return cityRepository.findAll(Sort.by("nome").ascending());
+    public Page<City> getAllCities(Pageable pageable){
+        return cityRepository.findAll(pageable);
     }
 
     public Optional<City> getSingleCity(String name){
         return cityRepository.findCityByNome(StringUtils.capitalize(name));
     }
 
-    public List<Optional<City>> getCitiesLike(String name){
-        Sort sort = Sort.by("nome").ascending();
-        return cityRepository.findCityByNomeLike(name, sort);
+    public Page<Optional<City>> getCitiesLike(String name, Pageable pageable){
+        return cityRepository.findCityByNomeLike(name, pageable);
     }
 
     public String updateSingleCity(

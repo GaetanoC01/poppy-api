@@ -4,6 +4,10 @@ import com.trafalino.poppy.dto.UpdateRecord;
 import com.trafalino.poppy.dto.Wholesaler;
 import com.trafalino.poppy.service.WholesalerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +35,12 @@ public class WholesalerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Wholesaler>> getAllWholesalers() {
-        return new ResponseEntity<List<Wholesaler>>(
-                wholesalerService.getAllWholesalers()
+    public ResponseEntity<Page<Wholesaler>> getAllWholesalers(
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        return new ResponseEntity<Page<Wholesaler>>(
+                wholesalerService.getAllWholesalers(pageable)
                 ,
                 HttpStatus.OK
         );
@@ -51,11 +58,13 @@ public class WholesalerController {
     }
 
     @GetMapping("/search/{wholesalerName}")
-    public ResponseEntity<List<Optional<Wholesaler>>> getWholesalersSearch(
-            @PathVariable String wholesalerName
+    public ResponseEntity<Page<Optional<Wholesaler>>> getWholesalersSearch(
+            @PathVariable String wholesalerName,
+            @RequestParam(defaultValue = "0") int page
     ) {
-        return new ResponseEntity<List<Optional<Wholesaler>>>(
-                wholesalerService.getWholesalersLike(wholesalerName)
+        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        return new ResponseEntity<Page<Optional<Wholesaler>>>(
+                wholesalerService.getWholesalersLike(wholesalerName, pageable)
                 ,
                 HttpStatus.OK
         );
