@@ -34,9 +34,15 @@ public class CityController {
 
     @GetMapping
     public ResponseEntity<Page<City>> getAllCities(
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        Pageable pageable = PageRequest.of(
+                page,
+                sizePerPage,
+                Sort.Direction.ASC,
+                "nome"
+        );
         return new ResponseEntity<Page<City>>(
                 cityService.getAllCities(pageable),
                 HttpStatus.OK
@@ -56,9 +62,14 @@ public class CityController {
     @GetMapping("/search/{cityName}")
     public ResponseEntity<Page<Optional<City>>> getCitiesSearch(
             @PathVariable String cityName,
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ){
-        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        Pageable pageable = PageRequest.of(
+                page,
+                sizePerPage, Sort.Direction.ASC,
+                "nome"
+        );
         return new ResponseEntity<Page<Optional<City>>>(
                 cityService.getCitiesLike(cityName, pageable),
                 HttpStatus.OK

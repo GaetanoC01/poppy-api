@@ -36,9 +36,15 @@ public class WholesalerController {
 
     @GetMapping
     public ResponseEntity<Page<Wholesaler>> getAllWholesalers(
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        Pageable pageable = PageRequest.of(
+                page,
+                sizePerPage,
+                Sort.Direction.ASC,
+                "nome"
+        );
         return new ResponseEntity<Page<Wholesaler>>(
                 wholesalerService.getAllWholesalers(pageable)
                 ,
@@ -60,9 +66,15 @@ public class WholesalerController {
     @GetMapping("/search/{wholesalerName}")
     public ResponseEntity<Page<Optional<Wholesaler>>> getWholesalersSearch(
             @PathVariable String wholesalerName,
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        Pageable pageable = PageRequest.of(
+                page,
+                sizePerPage,
+                Sort.Direction.ASC,
+                "nome"
+        );
         return new ResponseEntity<Page<Optional<Wholesaler>>>(
                 wholesalerService.getWholesalersLike(wholesalerName, pageable)
                 ,

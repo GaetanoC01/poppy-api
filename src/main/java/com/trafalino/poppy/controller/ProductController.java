@@ -36,11 +36,12 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<Product>> getAllProducts(
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
         Pageable pageable = PageRequest.of(
                 page,
-                10,
+                sizePerPage,
                 Sort.Direction.ASC,
                 "nome"
         );
@@ -65,9 +66,15 @@ public class ProductController {
     @GetMapping("/search/{productName}")
     public ResponseEntity<Page<Optional<Product>>> getProductsSearch(
             @PathVariable String productName,
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.Direction.ASC, "nome");
+        Pageable pageable = PageRequest.of(
+                page,
+                sizePerPage,
+                Sort.Direction.ASC,
+                "nome"
+        );
         return new ResponseEntity<Page<Optional<Product>>>(
                 productService.getProductsLike(productName, pageable)
                 ,

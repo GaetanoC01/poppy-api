@@ -36,11 +36,12 @@ public class SaleController {
 
     @GetMapping
     public ResponseEntity<Page<Sale>> getAllSales(
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
         Pageable pageable = PageRequest.of(
                 page,
-                25,
+                sizePerPage,
                 Sort.by("anno").descending().and(
                         Sort.by("meseEncoded").descending()
                 ).and(
