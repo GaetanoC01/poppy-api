@@ -40,7 +40,7 @@ public class SaleController {
     ) {
         Pageable pageable = PageRequest.of(
                 page,
-                10,
+                25,
                 Sort.by("anno").descending().and(
                         Sort.by("meseEncoded").descending()
                 ).and(
