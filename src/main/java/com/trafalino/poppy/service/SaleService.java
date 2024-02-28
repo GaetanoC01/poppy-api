@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -99,7 +100,7 @@ public class SaleService {
     public Page<Sale> getAllSales(Pageable pageable) {
         return saleRepository.findAll(pageable);
     }
-    public List<Sale> filterData(
+    public Page<Sale> filterData(
             String month,
             Integer year,
             String wholesaler,
@@ -107,9 +108,10 @@ public class SaleService {
             String province,
             String region,
             String cap,
-            String product
+            String product,
+            Pageable pageable
     ) {
-        Query query = new Query();
+        Query query = new Query().with(pageable);
 
         if(month != null) {
             query.addCriteria(Criteria.where("mese").is(month));
@@ -136,7 +138,16 @@ public class SaleService {
             query.addCriteria(Criteria.where("prodotto").is(product));
         }
 
-        return mongoTemplate.find(query, Sale.class);
+        List<Sale> queryResult = mongoTemplate.find(query, Sale.class);
+
+        return PageableExecutionUtils.getPage(
+                queryResult,
+                pageable,
+                () -> mongoTemplate.count(
+                        Query.of(query).limit(-1).skip(-1),
+                        Sale.class
+                )
+        );
     }
 
     // Update Service

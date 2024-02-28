@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/sales")
 @CrossOrigin(origins = "*")
@@ -59,7 +57,7 @@ public class SaleController {
 
 
     @GetMapping("filter")
-    public ResponseEntity<List<Sale>> filterSale(
+    public ResponseEntity<Page<Sale>> filterSale(
             @RequestParam(value = "mese", required = false) String month,
             @RequestParam(value = "anno", required = false) Integer year,
             @RequestParam(value = "grossista", required = false) String wholesaler,
@@ -67,9 +65,22 @@ public class SaleController {
             @RequestParam(value = "provincia", required = false) String province,
             @RequestParam(value = "regione", required = false) String region,
             @RequestParam(value = "cap", required = false) String cap,
-            @RequestParam(value = "prodotto", required = false) String product
+            @RequestParam(value = "prodotto", required = false) String product,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int sizePerPage
     ) {
-        return new ResponseEntity<List<Sale>>(
+        Pageable pageable = PageRequest.of(
+                page,
+                sizePerPage,
+                Sort.by("anno").descending().and(
+                        Sort.by("meseEncoded").descending()
+                ).and(
+                        Sort.by("grossista").ascending()
+                ).and(
+                        Sort.by("prodotto").ascending()
+                )
+        );
+        return new ResponseEntity<Page<Sale>>(
                 saleService.filterData(
                         StringUtils.capitalize(month),
                         year,
@@ -78,7 +89,8 @@ public class SaleController {
                         StringUtils.capitalize(province),
                         StringUtils.capitalize(region),
                         StringUtils.capitalize(cap),
-                        StringUtils.capitalize(product)
+                        StringUtils.capitalize(product),
+                        pageable
                 )
                 ,
                 HttpStatus.OK
